@@ -1,0 +1,6 @@
+framework module Pods_ElMenus {
+  umbrella header "Pods-ElMenus-umbrella.h"
+
+  export *
+  module * { export * }
+}
