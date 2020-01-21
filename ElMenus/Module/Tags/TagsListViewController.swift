@@ -148,7 +148,6 @@ class TagsListViewController: UIViewController {
             }
         }
         
-        //itemsViewModel.initFetch(withTagName: "1 - Egyptian")
         
     }
     

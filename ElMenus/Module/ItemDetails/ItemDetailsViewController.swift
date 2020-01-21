@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import Hero
 
 class ItemDetailsViewController: UIViewController {
     
@@ -23,6 +24,10 @@ class ItemDetailsViewController: UIViewController {
         descrptionLbl.text = itemData?.descriptionField
         setImg(url: itemData?.photoUrl)
         
+        //transtion animation
+        self.hero.isEnabled = true
+        imgView.heroID = "itemCellHeroId-\(itemData?.id ?? 0)"
+        //descrptionLbl.hero.modifiers = [.fade, .translate(x:0, y:-250), .rotate(x:-1.6), .scale(1.5)]
     }
     
     private func setImg(url: String?) {

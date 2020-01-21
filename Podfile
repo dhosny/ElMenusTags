@@ -10,4 +10,5 @@ target 'ElMenus' do
     pod 'Alamofire', '~> 4.0'
     pod 'RealmSwift', '~> 3.20.0'
     pod 'Kingfisher', '~> 5.0'
+    pod 'Hero'
 end

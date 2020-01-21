@@ -16,13 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let gatway = TagGatewayImp()
-        gatway.getTags(In: 1){ (data,_,_) in
-            print(data)
-        }
-        gatway.getItems(By:"1 - Egyptian"){ (data,_,_) in
-            print(data)
-        }
         return true
     }
 

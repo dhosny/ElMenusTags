@@ -80,7 +80,7 @@ class ItemsListViewModel {
     
     func createItemCellViewModel(item: Item ) -> ItemsListCellViewModel {
         
-        return ItemsListCellViewModel(name: item.name, imgUrl: item.photoUrl)
+        return ItemsListCellViewModel(id: item.id, name: item.name, imgUrl: item.photoUrl)
     }
     
     private func processFetchedData(data: [Item] ) {

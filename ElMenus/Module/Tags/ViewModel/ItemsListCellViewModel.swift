@@ -9,13 +9,14 @@
 import Foundation
 
 class ItemsListCellViewModel {
-    
+    let id: Int
     let titleText: String
     let imageUrl: String
     
-    init(name: String, imgUrl: String) {
+    init(id: Int, name: String, imgUrl: String) {
         self.titleText = name
         self.imageUrl = imgUrl
+        self.id = id
     }
     
 }

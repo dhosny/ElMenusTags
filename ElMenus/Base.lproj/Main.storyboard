@@ -18,6 +18,9 @@
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="O92-Vk-OVK"/>
                     </connections>
@@ -110,6 +113,9 @@
                                                                 <constraint firstAttribute="width" constant="60" id="NMU-PV-oZG"/>
                                                                 <constraint firstAttribute="height" constant="60" id="Uhn-AG-rMY"/>
                                                             </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="itemCellHeroId-655882"/>
+                                                            </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="REF-xF-2c6">
                                                             <rect key="frame" x="76" y="27.5" width="248" height="21"/>
@@ -164,6 +170,9 @@
                     <navigationItem key="navigationItem" id="IsY-3s-nim">
                         <barButtonItem key="backBarButtonItem" title=" " id="fZq-q7-H6i"/>
                     </navigationItem>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="NO"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="collectionView" destination="CRZ-yc-Itd" id="ieC-ua-sPp"/>
                         <outlet property="itemsTableView" destination="s5f-4k-Slp" id="NnH-Tn-XR2"/>
@@ -233,6 +242,9 @@
                         <viewLayoutGuide key="safeArea" id="rnz-w6-vF0"/>
                     </view>
                     <navigationItem key="navigationItem" title="Item Details" id="qrW-ja-XBN"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="descrptionLbl" destination="Ifs-iR-ITI" id="ZnV-nC-Tci"/>
                         <outlet property="imgView" destination="cBj-Wv-eUd" id="cys-yg-Wn0"/>

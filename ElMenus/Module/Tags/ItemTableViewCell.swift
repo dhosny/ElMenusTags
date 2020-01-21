@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import Hero
 
 class ItemTableViewCell: UITableViewCell {
     
@@ -20,6 +21,7 @@ class ItemTableViewCell: UITableViewCell {
         didSet {
             nameLbl.text = cellVM?.titleText
             self.setImg(url: cellVM?.imageUrl)
+            imgView.heroID = "itemCellHeroId-\(cellVM?.id ?? 0)"
         }
     }
     override func awakeFromNib() {
