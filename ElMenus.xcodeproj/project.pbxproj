@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3866B45A23D723AE0045C8D5 /* ItemDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3866B45923D723AE0045C8D5 /* ItemDetailsViewController.swift */; };
 		3885BB0E23D59A7D00D1DE27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3885BB0D23D59A7D00D1DE27 /* AppDelegate.swift */; };
 		3885BB1323D59A7D00D1DE27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3885BB1123D59A7D00D1DE27 /* Main.storyboard */; };
 		3885BB1523D59A7E00D1DE27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3885BB1423D59A7E00D1DE27 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		1E642870519BDA15C7A06FC8 /* Pods_ElMenus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElMenus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29E5F64BBA017981F086E7B0 /* Pods-ElMenus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElMenus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElMenus/Pods-ElMenus.debug.xcconfig"; sourceTree = "<group>"; };
+		3866B45923D723AE0045C8D5 /* ItemDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewController.swift; sourceTree = "<group>"; };
 		3885BB0A23D59A7D00D1DE27 /* ElMenus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElMenus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3885BB0D23D59A7D00D1DE27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3885BB1223D59A7D00D1DE27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -66,6 +68,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3866B45723D7236E0045C8D5 /* ItemDetails */ = {
+			isa = PBXGroup;
+			children = (
+				3866B45923D723AE0045C8D5 /* ItemDetailsViewController.swift */,
+			);
+			path = ItemDetails;
+			sourceTree = "<group>";
+		};
 		3885BB0123D59A7D00D1DE27 = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				3885BB4123D5D77F00D1DE27 /* Tags */,
+				3866B45723D7236E0045C8D5 /* ItemDetails */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -330,6 +341,7 @@
 			files = (
 				3885BB3E23D5AEAA00D1DE27 /* Tag.swift in Sources */,
 				3885BB4323D5D84E00D1DE27 /* TagsListViewController.swift in Sources */,
+				3866B45A23D723AE0045C8D5 /* ItemDetailsViewController.swift in Sources */,
 				3885BB2B23D5AD6500D1DE27 /* TagGateway.swift in Sources */,
 				3885BB4623D5D9F900D1DE27 /* TagCollectionViewCell.swift in Sources */,
 				3885BB5023D5F88600D1DE27 /* ItemTableViewCell.swift in Sources */,

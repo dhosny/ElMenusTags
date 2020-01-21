@@ -22,12 +22,10 @@ class TagsListViewController: UIViewController {
         super.viewDidLoad()
         
         tagsViewModel = TagsListViewModel()
-        itemsViewModel = ItemsListViewModel()
-        
+       
         initView()
-        initTagsVM()
-        initItemsVM()
         
+        initTagsVM()
     }
     
     func initView() {
@@ -38,6 +36,9 @@ class TagsListViewController: UIViewController {
         
         itemsTableView.delegate = self
         itemsTableView.dataSource = self
+        itemsTableView.estimatedRowHeight = 150
+        itemsTableView.rowHeight = UITableView.automaticDimension
+        
 
     }
     
@@ -84,11 +85,21 @@ class TagsListViewController: UIViewController {
         tagsViewModel.reloadTagsViewClosure = { [weak self] () in
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
+                //self?.itemsViewModel = self?.tagsViewModel.createItemViewModel()
+                //self?.itemsViewModel.initFetch()
             }
         }
         
+//        tagsViewModel.reloadItemsViewClosure = { [weak self] () in
+//            DispatchQueue.main.async {
+//                //self?.initItemsVM()
+//                self?.itemsViewModel.initFetch()
+//            }
+//        }
+        itemsViewModel  = tagsViewModel.createItemViewModel()
+        initItemsVM()
         tagsViewModel.initFetch()
-        
+       
     }
     
     func initItemsVM() {
@@ -115,17 +126,17 @@ class TagsListViewController: UIViewController {
                 case .empty, .error:
                     SVProgressHUD.dismiss()
                     UIView.animate(withDuration: 0.2, animations: {
-                        self.collectionView.alpha = 0.0
+                        self.itemsTableView.alpha = 0.0
                     })
                 case .loading:
                     SVProgressHUD.show()
                     UIView.animate(withDuration: 0.2, animations: {
-                        self.collectionView.alpha = 0.0
+                        self.itemsTableView.alpha = 0.0
                     })
                 case .loaded:
                     SVProgressHUD.dismiss()
                     UIView.animate(withDuration: 0.2, animations: {
-                        self.collectionView.alpha = 1.0
+                        self.itemsTableView.alpha = 1.0
                     })
                 }
             }
@@ -137,7 +148,7 @@ class TagsListViewController: UIViewController {
             }
         }
         
-        itemsViewModel.initFetch(withTagName: "1 - Egyptian")
+        //itemsViewModel.initFetch(withTagName: "1 - Egyptian")
         
     }
     
@@ -172,6 +183,10 @@ extension TagsListViewController: UICollectionViewDelegate, UICollectionViewData
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        tagsViewModel.userPressed(at: indexPath)
+    }
+    
 }
 
 
@@ -192,6 +207,19 @@ extension TagsListViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        itemsViewModel.userPressed(at: indexPath)
+        return indexPath
+    }
     
     
+}
+
+extension TagsListViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? ItemDetailsViewController,
+            let item = itemsViewModel.selectedItem {
+            vc.itemData = item
+        }
+    }
 }

@@ -13,7 +13,11 @@ class ItemsListViewModel {
     let tagGateway: TagGateway
     
     private var itemsList: [Item] = [Item]()
-    private var tagName: String = ""
+    var tagName: String? {
+        didSet {
+            self.initFetch()
+        }
+    }
     
     private var itemsCellViewModels: [ItemsListCellViewModel] = [ItemsListCellViewModel]() {
         didSet {
@@ -44,11 +48,12 @@ class ItemsListViewModel {
     
     init(tagGateway: TagGateway = TagGatewayImp()) {
         self.tagGateway = tagGateway
+        //self.tagName = tagName
     }
     
-    func initFetch(withTagName: String) {
+    func initFetch() {
         state = .loading
-        tagGateway.getItems(By: withTagName){ [weak self] (items, msg, states) in
+        tagGateway.getItems(By: tagName!){ [weak self] (items, msg, states) in
             guard let self = self else {
                 return
             }
@@ -111,28 +116,7 @@ extension ItemsListViewModel {
     //
     //    }
     //
-    //    func userPressed( at indexPath: IndexPath ){
-    //
-    //        switch self.displayMode {
-    //        case .allCountries, .filteredCountries:
-    //            self.selectedCountry = nil
-    //            if (self.selectedCountriesList.count < 5){
-    //                if (!displayedCountriesList[indexPath.row].isSelected){
-    //                    //add to selected countries
-    //                    self.selectCountry(atIndex: indexPath.row)
-    //                } else {
-    //                    alertMessage = NSLocalizedString("Sorry: This country is already added", comment: "")
-    //                }
-    //
-    //            } else {
-    //                alertMessage = NSLocalizedString("Sorry: You can't add more than 5 countries", comment: "")
-    //            }
-    //
-    //        //self.displayMode = .selectedCountries
-    //        case .selectedCountries:
-    //            self.selectedCountry = displayedCountriesList[indexPath.row]
-    //
-    //        }
-    //
-    //    }
+        func userPressed( at indexPath: IndexPath ){
+            selectedItem = itemsList[indexPath.row]
+        }
 }

@@ -27,6 +27,9 @@ class TagsListViewModel{
             self.reloadTagsViewClosure?()
         }
     }
+    
+    var itemsViewModel: ItemsListViewModel?
+    
     var state: State = .empty {
         didSet {
             self.updateLoadingStatus?()
@@ -43,9 +46,15 @@ class TagsListViewModel{
         return tagsList.count
     }
     
-    var selectedTag: Tag?
+    var selectedTag: Tag?{
+        didSet {
+            itemsViewModel?.tagName = selectedTag?.tagName
+            //self.reloadItemsViewClosure?()
+        }
+    }
     
     var reloadTagsViewClosure: (()->())?
+    var reloadItemsViewClosure: (()->())?
     var showAlertClosure: (()->())?
     var updateLoadingStatus: (()->())?
     
@@ -92,7 +101,18 @@ class TagsListViewModel{
             vms.append(createTagCellViewModel(tag: item))
         }
         self.tagCellViewModels = vms
+        if selectedTag == nil {
+            if data.count > 0 {
+                selectedTag = data[0]
+            }
+        }
     }
+    
+    func createItemViewModel() -> ItemsListViewModel {
+        itemsViewModel = ItemsListViewModel()
+        return itemsViewModel!
+    }
+    
     
 }
 
@@ -118,28 +138,7 @@ extension TagsListViewModel {
 //        
 //    }
 //    
-//    func userPressed( at indexPath: IndexPath ){
-//        
-//        switch self.displayMode {
-//        case .allCountries, .filteredCountries:
-//            self.selectedCountry = nil
-//            if (self.selectedCountriesList.count < 5){
-//                if (!displayedCountriesList[indexPath.row].isSelected){
-//                    //add to selected countries
-//                    self.selectCountry(atIndex: indexPath.row)
-//                } else {
-//                    alertMessage = NSLocalizedString("Sorry: This country is already added", comment: "")
-//                }
-//                
-//            } else {
-//                alertMessage = NSLocalizedString("Sorry: You can't add more than 5 countries", comment: "")
-//            }
-//            
-//        //self.displayMode = .selectedCountries
-//        case .selectedCountries:
-//            self.selectedCountry = displayedCountriesList[indexPath.row]
-//            
-//        }
-//        
-//    }
+    func userPressed(at indexPath: IndexPath ){
+        selectedTag = tagsList[indexPath.row]
+    }
 }
