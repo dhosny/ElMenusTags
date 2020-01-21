@@ -214,6 +214,34 @@ extension TagsListViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
+extension TagsListViewController: UIScrollViewDelegate{
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if scrollView == itemsTableView{
+            let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+            if translation.y > 0 {
+                // swipes from top to bottom of screen -> down
+                print(" // move down   111111111 2324234 34343")
+                UIView.animate(withDuration: 0.5, animations: {
+                    //self.upperViewHeight.constant = 120
+                    self.view.layoutIfNeeded()
+                    
+                })
+                
+            }
+            else {
+                // swipes from bottom to top of screen -> up
+                print(" // move up  ........ ..... ..... .. .")
+                UIView.animate(withDuration: 0.5, animations: {
+                    //self.upperViewHeight.constant = 0
+                    self.view.layoutIfNeeded()
+                    
+                })
+                
+            }
+            
+        }
+    }
+}
 extension TagsListViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ItemDetailsViewController,
