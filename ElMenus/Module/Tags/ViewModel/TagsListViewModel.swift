@@ -21,6 +21,7 @@ class TagsListViewModel{
     
     private var tagsList: [Tag] = [Tag]()
     private var pageNumber: Int = 1
+    private var canLoadNextPage: Bool = true
     
     private var tagCellViewModels: [TagsListCellViewModel] = [TagsListCellViewModel]() {
         didSet {
@@ -64,21 +65,10 @@ class TagsListViewModel{
     
     func initFetch() {
         state = .loading
-        tagGateway.getTags(In: pageNumber){ [weak self] (tags, msg, states) in
-            guard let self = self else {
-                return
-            }
-            
-            guard states == .success else {
-                self.state = .error
-                self.alertMessage = msg
-                return
-            }
-            
-            self.state = .loaded
-            self.processFetchedData(data: tags)
-          
-        }
+        tagsList = []
+        pageNumber = 1
+        canLoadNextPage = true
+        loadData(page: pageNumber)
     }
     
     func getTag(atIndex : Int) -> Tag{
@@ -94,50 +84,59 @@ class TagsListViewModel{
         return TagsListCellViewModel(name: tag.tagName, imgUrl: tag.photoURL) 
     }
     
-    private func processFetchedData(data: [Tag] ) {
-        self.tagsList = data // Cache
-        var vms = [TagsListCellViewModel]()
-        for item in data {
-            vms.append(createTagCellViewModel(tag: item))
-        }
-        self.tagCellViewModels = vms
-        if selectedTag == nil {
-            if data.count > 0 {
-                selectedTag = data[0]
-            }
-        }
-    }
     
     func createItemViewModel() -> ItemsListViewModel {
         itemsViewModel = ItemsListViewModel()
         return itemsViewModel!
     }
     
+    //load next page
+    func loadNextPage() {
+        if canLoadNextPage {
+            canLoadNextPage = false
+            pageNumber += 1
+            loadData(page: pageNumber)
+        }
+    }
     
+    private func loadData(page: Int) {
+        state = .loading
+        tagGateway.getTags(In: page){ [weak self] (tags, msg, states) in
+            guard let self = self else {
+                return
+            }
+            guard states == .success else {
+                self.state = .error
+                self.alertMessage = msg
+                return
+            }
+            
+            self.state = .loaded
+            self.processFetchedData(data: tags)
+            
+        }
+    }
+    private func processFetchedData(data: [Tag] ) {
+        
+        self.canLoadNextPage = (data.count > 0)
+        self.tagsList.append(contentsOf: data)  // Cache
+        var vms = [TagsListCellViewModel]()
+        for item in data {
+            vms.append(createTagCellViewModel(tag: item))
+        }
+        
+        self.tagCellViewModels.append(contentsOf: vms)
+        
+        if selectedTag == nil {
+            if data.count > 0 {
+                selectedTag = data[0]
+            }
+        }
+    }
 }
 
 extension TagsListViewModel {
     
-//    func userPressedAddBtn(){
-//        self.displayMode = .allCountries
-//    }
-//    
-//    func userPressedCancelAddBtn() {
-//        self.displayMode = .selectedCountries
-//    }
-//    
-//    func userSearchedForCountry( searchTxt: String) {
-//        if searchTxt == "" {
-//            self.displayMode = .allCountries
-//            
-//        } else {
-//            self.filteredCountriesList = countryGateway.getFilteredCountries(str: searchTxt)
-//            self.displayMode = .filteredCountries
-//            
-//        }
-//        
-//    }
-//    
     func userPressed(at indexPath: IndexPath ){
         selectedTag = tagsList[indexPath.row]
     }

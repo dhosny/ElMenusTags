@@ -15,6 +15,10 @@ class TagsListViewController: UIViewController {
     
     var itemsViewModel: ItemsListViewModel!
     
+    let MAX_TAGS_HIGHT = CGFloat(100)
+    
+    var loadingView: LoadingReusableView?
+    @IBOutlet weak var collectionViewHieght: NSLayoutConstraint!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var itemsTableView: UITableView!
     
@@ -33,6 +37,9 @@ class TagsListViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        //Register Loading Reuseable View
+        let loadingReusableNib = UINib(nibName: "LoadingReusableView", bundle: nil)
+        collectionView.register(loadingReusableNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "loadingresuableviewid")
         
         itemsTableView.delegate = self
         itemsTableView.dataSource = self
@@ -64,19 +71,24 @@ class TagsListViewController: UIViewController {
                 }
                 switch self.tagsViewModel.state {
                 case .empty, .error:
-                    SVProgressHUD.dismiss()
+                    //SVProgressHUD.dismiss()
+                    self.loadingView?.activityIndicator.stopAnimating()
                     UIView.animate(withDuration: 0.2, animations: {
                         self.collectionView.alpha = 0.0
                     })
                 case .loading:
-                    SVProgressHUD.show()
+                    //SVProgressHUD.show()
+                    self.loadingView?.activityIndicator.startAnimating()
                     UIView.animate(withDuration: 0.2, animations: {
-                        self.collectionView.alpha = 0.0
+                        //self.collectionView.alpha = 0.5
+                        self.loadingView?.activityIndicator.startAnimating()
                     })
                 case .loaded:
-                    SVProgressHUD.dismiss()
+                    //SVProgressHUD.dismiss()
+                    self.loadingView?.activityIndicator.stopAnimating()
                     UIView.animate(withDuration: 0.2, animations: {
                         self.collectionView.alpha = 1.0
+                        //self.loadingView?.activityIndicator.stopAnimating()
                     })
                 }
             }
@@ -164,7 +176,7 @@ class TagsListViewController: UIViewController {
 
 }
 
-extension TagsListViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+extension TagsListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tagsViewModel.numberOfTagsCells
@@ -186,6 +198,40 @@ extension TagsListViewController: UICollectionViewDelegate, UICollectionViewData
         tagsViewModel.userPressed(at: indexPath)
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if indexPath.row == self.tagsViewModel.numberOfTagsCells - 2 {
+            // Load next batch of tags
+            self.tagsViewModel.loadNextPage()
+        }
+    
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+    
+       return CGSize(width: 40, height: collectionView.bounds.size.height)
+    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionFooter {
+            let aFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "loadingresuableviewid", for: indexPath) as! LoadingReusableView
+            loadingView = aFooterView
+            loadingView?.backgroundColor = UIColor.clear
+            return aFooterView
+        }
+        return UICollectionReusableView()
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+//        if elementKind == UICollectionView.elementKindSectionFooter {
+//            self.loadingView?.activityIndicator.startAnimating()
+//        }
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+//        if elementKind == UICollectionView.elementKindSectionFooter {
+//            self.loadingView?.activityIndicator.stopAnimating()
+//        }
+//    }
 }
 
 
@@ -211,37 +257,55 @@ extension TagsListViewController: UITableViewDelegate, UITableViewDataSource {
         return indexPath
     }
     
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if tableView == itemsTableView {
+//            if indexPath.row == 0 {
+//                UIView.animate(withDuration: 0.5, animations: {
+//                    self.collectionViewHieght.constant = self.MAX_TAGS_HIGHT
+//                    self.view.layoutIfNeeded()
+//
+//                })
+//            }
+//        }
+//    }
+    
     
 }
 
-extension TagsListViewController: UIScrollViewDelegate{
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+extension TagsListViewController{
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == itemsTableView{
             let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
             if translation.y > 0 {
                 // swipes from top to bottom of screen -> down
-                print(" // move down   111111111 2324234 34343")
-                UIView.animate(withDuration: 0.5, animations: {
-                    //self.upperViewHeight.constant = 120
-                    self.view.layoutIfNeeded()
-                    
-                })
+                //print(" // move down   111111111 2324234 34343")
+                 if self.collectionViewHieght.constant == 0 {
+                    if ((itemsTableView.indexPathsForVisibleRows?.contains(IndexPath(row: 0, section: 0)))!) {
+                        UIView.animate(withDuration: 0.5, animations: {
+                            self.collectionViewHieght.constant = self.MAX_TAGS_HIGHT
+                            self.view.layoutIfNeeded()
+                            
+                        })
+                    }
+                }
                 
-            }
-            else {
+            } else {
                 // swipes from bottom to top of screen -> up
-                print(" // move up  ........ ..... ..... .. .")
-                UIView.animate(withDuration: 0.5, animations: {
-                    //self.upperViewHeight.constant = 0
-                    self.view.layoutIfNeeded()
-                    
-                })
-                
+                //print(" // move up  ........ ..... ..... .. .")
+                if self.collectionViewHieght.constant == MAX_TAGS_HIGHT {
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.collectionViewHieght.constant = 0
+                        self.view.layoutIfNeeded()
+                        
+                    })
+                }
             }
-            
         }
+        
     }
 }
+
 extension TagsListViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ItemDetailsViewController,
