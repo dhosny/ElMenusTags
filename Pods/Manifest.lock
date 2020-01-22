@@ -4,6 +4,7 @@ PODS:
   - Kingfisher (5.10.1):
     - Kingfisher/Core (= 5.10.1)
   - Kingfisher/Core (5.10.1)
+  - ReachabilitySwift (5.0.0)
   - Realm (3.20.0):
     - Realm/Headers (= 3.20.0)
   - Realm/Headers (3.20.0)
@@ -15,6 +16,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.0)
   - Hero
   - Kingfisher (~> 5.0)
+  - ReachabilitySwift
   - RealmSwift (~> 3.20.0)
   - SVProgressHUD
 
@@ -23,6 +25,7 @@ SPEC REPOS:
     - Alamofire
     - Hero
     - Kingfisher
+    - ReachabilitySwift
     - Realm
     - RealmSwift
     - SVProgressHUD
@@ -31,10 +34,11 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   Hero: b7385b75e7259da62f4f85462f59a5082d66b058
   Kingfisher: eb36b7dfcc78d60877051c92c119a2865972961a
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Realm: 8b2ca5bc6479a91f379b6b42b5922e396cd5ba5a
   RealmSwift: 1949ef26a279e1845bd51d591b9103adfcd121df
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 3c6248bd574c5fe64abb41d021f841668c34601b
+PODFILE CHECKSUM: fb619f85ea4055c6d0ccdaff5fd0be5b62b062f4
 
 COCOAPODS: 1.5.3

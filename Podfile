@@ -11,4 +11,5 @@ target 'ElMenus' do
     pod 'RealmSwift', '~> 3.20.0'
     pod 'Kingfisher', '~> 5.0'
     pod 'Hero'
+    pod 'ReachabilitySwift'
 end
