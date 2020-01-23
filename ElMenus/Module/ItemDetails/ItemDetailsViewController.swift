@@ -5,7 +5,7 @@
 //  Created by Dalia Hosny on 1/21/20.
 //  Copyright © 2020 Dalia Hosny. All rights reserved.
 //
-
+//https://blog.usejournal.com/how-to-collapse-a-custom-header-view-in-ios-while-scrolling-5e0949c64ecd
 import UIKit
 import Kingfisher
 import Hero
