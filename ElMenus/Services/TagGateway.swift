@@ -15,9 +15,9 @@ enum ResponceStatus {
 }
 
 protocol TagGateway {
-    func getTags(In page: Int, completion: @escaping (_ responce : [Tag],_ message : String,_ status : ResponceStatus) -> ())
-    func getItems(By tagName: String, completion: @escaping (_ responce : [Item],_ message : String,_ status : ResponceStatus) -> ())
-    func getItemData(By id: Int, completion: @escaping (_ responce : Item,_ message : String,_ status : ResponceStatus) -> ())
+    func getTags(online: Bool, In page: Int, completion: @escaping (_ responce : [Tag],_ message : String,_ status : ResponceStatus) -> ())
+    func getItems(online: Bool, By tagName: String, completion: @escaping (_ responce : [Item],_ message : String,_ status : ResponceStatus) -> ())
+    //func getItemData(By id: Int, completion: @escaping (_ responce : Item,_ message : String,_ status : ResponceStatus) -> ())
 }
 
 class TagGatewayImp: TagGateway {
@@ -31,8 +31,22 @@ class TagGatewayImp: TagGateway {
         self.localStorage = localStorage
     }
     
-    func getTags(In page: Int,completion: @escaping ([Tag], String, ResponceStatus) -> ()) {
-        
+    func getTags(online: Bool, In page: Int,completion: @escaping ([Tag], String, ResponceStatus) -> ()) {
+        if online {
+            loadTags(In: page){ [weak self] (tags, msg, status) in
+                if status == .success {
+                    //cach
+                    self?.localStorage.saveTags(tags: tags, inPage: page)
+                }
+                completion(tags, msg, status)
+            }
+        }else{
+            let tags = localStorage.getAllTage(inPage: page)
+            completion(tags, "Done", .success)
+        }
+    }
+    
+    func loadTags(In page: Int,completion: @escaping ([Tag], String, ResponceStatus) -> ()) {
         let apiURL = "/tags/\(page)"
         //let parameter = "\(page)"
         apiClient.getApiRequest(apiURL: apiURL, withParameter: ""){
@@ -44,7 +58,7 @@ class TagGatewayImp: TagGateway {
                     var tags = [Tag]()
                     if let tagsArray = result["tags"] as? [[String:Any]]{
                         for dic in tagsArray{
-                            let value = Tag.fromDictionary(dictionary: dic)
+                            let value = Tag.fromDictionary(page: page, dictionary: dic)
                             tags.append(value)
                         }
                         completion(tags, msg, .success)
@@ -62,7 +76,24 @@ class TagGatewayImp: TagGateway {
         }
     }
     
-    func getItems(By tagName: String, completion: @escaping ([Item], String, ResponceStatus) -> ()) {
+    func getItems(online: Bool, By tagName: String, completion: @escaping ([Item], String, ResponceStatus) -> ()) {
+        if online {
+            loadItems(By: tagName){ [weak self] (items, msg, status) in
+                if status == .success {
+                    //cach
+                    self?.localStorage.saveItems(items: items, tagName: tagName)
+                    
+                }
+                completion(items, msg, status)
+            }
+        }else{
+            let items = localStorage.getAllItems(tagName: tagName)
+            completion(items, "Done", .success)
+        }
+        
+    }
+    
+    func loadItems(By tagName: String, completion: @escaping ([Item], String, ResponceStatus) -> ()){
         let apiURL = "/items/\(tagName)"
         //let parameter = "\(page)"
         apiClient.getApiRequest(apiURL: apiURL, withParameter: ""){
@@ -92,7 +123,4 @@ class TagGatewayImp: TagGateway {
         }
     }
     
-    func getItemData(By id: Int, completion: @escaping (Item, String, ResponceStatus) -> ()) {
-        
-    }
 }

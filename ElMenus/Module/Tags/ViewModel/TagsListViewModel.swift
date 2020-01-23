@@ -101,7 +101,7 @@ class TagsListViewModel{
     
     private func loadData(page: Int) {
         state = .loading
-        tagGateway.getTags(In: page){ [weak self] (tags, msg, states) in
+        tagGateway.getTags(online: false, In: page){ [weak self] (tags, msg, states) in
             guard let self = self else {
                 return
             }

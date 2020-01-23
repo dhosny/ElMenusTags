@@ -9,6 +9,7 @@ import Realm
 
 class Tag: Object {
 
+    @objc dynamic var page: Int = 0
 	@objc dynamic var photoURL: String!
 	@objc dynamic var tagName: String!
 
@@ -16,7 +17,7 @@ class Tag: Object {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	class func fromDictionary(dictionary: [String:Any]) -> Tag	{
+    class func fromDictionary(page: Int, dictionary: [String:Any]) -> Tag	{
 		let this = Tag()
 		
 		if let photoURLValue = dictionary["photoURL"] as? String{
@@ -25,6 +26,7 @@ class Tag: Object {
 		if let tagNameValue = dictionary["tagName"] as? String{
 			this.tagName = tagNameValue
 		}
+        this.page = page
 		return this
 	}
 
