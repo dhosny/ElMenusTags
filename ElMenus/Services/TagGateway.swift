@@ -8,35 +8,37 @@ import Foundation
 
 protocol TagGateway {
     
-    func getTags(online: Bool, In page: Int, completion: @escaping (_ success: Bool,_ responce: [Tag],_ error: APIError?) -> ())
-    func getItems(online: Bool, By tagName: String, completion: @escaping (_ success: Bool,_ responce: [Item],_ error: APIError?) -> ())
+    func getTags(In page: Int, completion: @escaping (_ success: Bool,_ responce: [Tag],_ error: APIError?,_ datamode: DataMode) -> ())
+    func getItems(By tagName: String, completion: @escaping (_ success: Bool,_ responce: [Item],_ error: APIError?,_ datamode: DataMode) -> ())
    
     //func getItemData(By id: Int, completion: @escaping (_ responce : Item,_ message : String,_ status : ResponceStatus) -> ())
 }
 
 class TagGatewayImp: TagGateway {
 
+    let reachability: Reachability
     let apiClient: APIClient
     let localStorage: LocalDataManagerProtocol
     
-    init(apiClient: APIClient = APIClientImp(), localStorage: LocalDataManagerProtocol = RealmLocalDataManager()) {
+    init(apiClient: APIClient = APIClientImp(), localStorage: LocalDataManagerProtocol = RealmLocalDataManager(), reachability: Reachability = ReachabilityImp()) {
     
         self.apiClient = apiClient
         self.localStorage = localStorage
+        self.reachability = reachability
     }
     
-    func getTags(online: Bool, In page: Int,completion: @escaping (_ success: Bool,_ responce: [Tag],_ error: APIError?) -> ()) {
-        if online {
+    func getTags(In page: Int,completion: @escaping (_ success: Bool,_ responce: [Tag],_ error: APIError?,_ datamode: DataMode) -> ()) {
+        if reachability.isConnectedToNetwork() {
             loadTags(In: page){ [weak self] (success, tags, error) in
                 if success {
                     //cach
                     self?.localStorage.saveTags(tags: tags, inPage: page)
                 }
-                completion(success, tags, error)
+                completion(success, tags, error, .online)
             }
         }else{
             let tags = localStorage.getAllTage(inPage: page)
-            completion(true, tags, nil)
+            completion(true, tags, nil, .offLine)
         }
     }
     
@@ -67,19 +69,19 @@ class TagGatewayImp: TagGateway {
         }
     }
     
-    func getItems(online: Bool, By tagName: String, completion: @escaping (_ success: Bool,_ responce: [Item],_ error: APIError?) -> ()) {
-        if online {
+    func getItems(By tagName: String, completion: @escaping (_ success: Bool,_ responce: [Item],_ error: APIError?,_ datamode: DataMode) -> ()) {
+        if reachability.isConnectedToNetwork() {
             loadItems(By: tagName){ [weak self] (success, items, error) in
                 if success {
                     //cach
                     self?.localStorage.saveItems(items: items, tagName: tagName)
                     
                 }
-                completion(success, items, error)
+                completion(success, items, error, .online)
             }
         }else{
             let items = localStorage.getAllItems(tagName: tagName)
-            completion(true, items, nil)
+            completion(true, items, nil, .offLine)
         }
         
     }

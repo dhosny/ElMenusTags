@@ -73,19 +73,22 @@ class TagsListViewController: UIViewController {
                 case .empty, .error:
                     //SVProgressHUD.dismiss()
                     self.loadingView?.activityIndicator.stopAnimating()
+                    self.loadingView?.activityIndicator.isHidden = true
                     UIView.animate(withDuration: 0.2, animations: {
                         self.collectionView.alpha = 0.0
                     })
                 case .loading:
                     //SVProgressHUD.show()
                     self.loadingView?.activityIndicator.startAnimating()
-                    UIView.animate(withDuration: 0.2, animations: {
-                        //self.collectionView.alpha = 0.5
-                        self.loadingView?.activityIndicator.startAnimating()
-                    })
+                    self.loadingView?.activityIndicator.isHidden = false
+//                    UIView.animate(withDuration: 0.2, animations: {
+//                        //self.collectionView.alpha = 0.5
+//                        self.loadingView?.activityIndicator.startAnimating()
+//                    })
                 case .loaded:
                     //SVProgressHUD.dismiss()
                     self.loadingView?.activityIndicator.stopAnimating()
+                    self.loadingView?.activityIndicator.isHidden = true
                     UIView.animate(withDuration: 0.2, animations: {
                         self.collectionView.alpha = 1.0
                         //self.loadingView?.activityIndicator.stopAnimating()
