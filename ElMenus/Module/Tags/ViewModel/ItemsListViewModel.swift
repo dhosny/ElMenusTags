@@ -35,7 +35,13 @@ class ItemsListViewModel {
             self.showAlertClosure?()
         }
     }
-    
+    var dataMode: DataMode?{
+        didSet {
+            if oldValue != nil && oldValue != dataMode {
+                self.updateDataModeStatus?()
+            }
+        }
+    }
     var numberOfCells: Int {
         return itemsList.count
     }
@@ -45,6 +51,7 @@ class ItemsListViewModel {
     var reloadItemsViewClosure: (()->())?
     var showAlertClosure: (()->())?
     var updateLoadingStatus: (()->())?
+    var updateDataModeStatus: (()->())?
     
     init(tagGateway: TagGateway = TagGatewayImp()) {
         self.tagGateway = tagGateway
@@ -63,8 +70,9 @@ class ItemsListViewModel {
                 self.alertMessage = error?.rawValue
                 return
             }
+            self.dataMode = dataMode
             
-            self.state = .loaded
+            self.state = (items.count == 0) ? .empty : .loaded
             self.processFetchedData(data: items)
             
         }

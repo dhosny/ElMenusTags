@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import NotificationBannerSwift
 
 class TagsListViewController: UIViewController {
 
@@ -100,17 +101,18 @@ class TagsListViewController: UIViewController {
         tagsViewModel.reloadTagsViewClosure = { [weak self] () in
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
-                //self?.itemsViewModel = self?.tagsViewModel.createItemViewModel()
-                //self?.itemsViewModel.initFetch()
             }
         }
         
-//        tagsViewModel.reloadItemsViewClosure = { [weak self] () in
-//            DispatchQueue.main.async {
-//                //self?.initItemsVM()
-//                self?.itemsViewModel.initFetch()
-//            }
-//        }
+        tagsViewModel.updateDataModeStatus = { [weak self] () in
+            DispatchQueue.main.async {
+                if let message = self?.tagsViewModel.dataMode?.rawValue {
+                    let type = (self?.tagsViewModel.dataMode == .offLine)
+                    self?.showBanner(message, error: type )
+                }
+            }
+        }
+        
         itemsViewModel  = tagsViewModel.createItemViewModel()
         initItemsVM()
         tagsViewModel.initFetch()
@@ -143,6 +145,7 @@ class TagsListViewController: UIViewController {
                     UIView.animate(withDuration: 0.2, animations: {
                         self.itemsTableView.alpha = 0.0
                     })
+                    self.showBanner("No Items Loaded", error: true)
                 case .loading:
                     SVProgressHUD.show()
                     UIView.animate(withDuration: 0.2, animations: {
@@ -163,10 +166,17 @@ class TagsListViewController: UIViewController {
             }
         }
         
-        
+        itemsViewModel.updateDataModeStatus = { [weak self] () in
+            DispatchQueue.main.async {
+                if let message = self?.itemsViewModel.dataMode?.rawValue {
+                    let type = (self?.itemsViewModel.dataMode == .offLine)
+                    self?.showBanner(message, error: type )
+                }
+            }
+        }
     }
     
-    func showAlert( _ message: String ) {
+    func showAlert(_ message: String) {
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
         alert.addAction( UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         //self.present(alert, animated: true, completion: nil)
@@ -175,6 +185,11 @@ class TagsListViewController: UIViewController {
         } else {
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func showBanner(_ message: String, error: Bool){
+        let banner = NotificationBanner(title: "Elmenus", subtitle: message, style: (error ? .danger :.success))
+        banner.show()
     }
 
 }
@@ -278,7 +293,7 @@ extension TagsListViewController: UITableViewDelegate, UITableViewDataSource {
 extension TagsListViewController{
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView == itemsTableView{
+        if scrollView == itemsTableView && tagsViewModel.state == .loaded && itemsViewModel.state == .loaded{
             let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
             if translation.y > 0 {
                 // swipes from top to bottom of screen -> down

@@ -49,8 +49,21 @@ class TagsListViewModel{
     
     var selectedTag: Tag?{
         didSet {
+            itemsViewModel?.dataMode = dataMode
             itemsViewModel?.tagName = selectedTag?.tagName
             //self.reloadItemsViewClosure?()
+        }
+    }
+    
+    var dataMode: DataMode?{
+        didSet {
+            //itemsViewModel?.dataMode = dataMode
+            if dataMode == .online {
+                self.canLoadNextPage = true
+            }
+            if oldValue != dataMode {
+                self.updateDataModeStatus?()
+            }
         }
     }
     
@@ -58,6 +71,7 @@ class TagsListViewModel{
     var reloadItemsViewClosure: (()->())?
     var showAlertClosure: (()->())?
     var updateLoadingStatus: (()->())?
+    var updateDataModeStatus: (()->())?
     
     init(tagGateway: TagGateway = TagGatewayImp()) {
         self.tagGateway = tagGateway
@@ -87,6 +101,7 @@ class TagsListViewModel{
     
     func createItemViewModel() -> ItemsListViewModel {
         itemsViewModel = ItemsListViewModel()
+        itemsViewModel?.dataMode = dataMode
         return itemsViewModel!
     }
     
@@ -113,12 +128,17 @@ class TagsListViewModel{
             
             self.state = .loaded
             self.processFetchedData(data: tags)
+            self.dataMode = dataMode
             
         }
     }
     private func processFetchedData(data: [Tag] ) {
         
         self.canLoadNextPage = (data.count > 0)
+        if !canLoadNextPage {
+            pageNumber -= 1
+            canLoadNextPage = true
+        }
         self.tagsList.append(contentsOf: data)  // Cache
         var vms = [TagsListCellViewModel]()
         for item in data {
