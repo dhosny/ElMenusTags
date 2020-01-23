@@ -53,14 +53,14 @@ class ItemsListViewModel {
     
     func initFetch() {
         state = .loading
-        tagGateway.getItems(online: false, By: tagName!){ [weak self] (items, msg, states) in
+        tagGateway.getItems(online: true, By: tagName!){ [weak self] (success, items, error) in
             guard let self = self else {
                 return
             }
             
-            guard states == .success else {
+            guard success else {
                 self.state = .error
-                self.alertMessage = msg
+                self.alertMessage = error?.rawValue
                 return
             }
             

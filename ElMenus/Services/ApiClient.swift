@@ -9,12 +9,12 @@ import Foundation
 import Alamofire
 
 protocol APIClient {
-    func getApiRequest(apiURL: String, withParameter parameter: String,  completion: @escaping (_ responce : Any?, _ statue: ResponceStatus, _ message: String) -> ())
+    func getApiRequest(apiURL: String, withParameter parameter: String,  completion: @escaping  ( _ success: Bool, _ responce: [String: Any]?, _ error: APIError? ) -> ())
 }
 
 class APIClientImp: APIClient {
     
-    func getApiRequest(apiURL: String, withParameter parameter: String = "",  completion: @escaping (_ responce : Any?, _ statue: ResponceStatus, _ message: String) -> ()) {
+    func getApiRequest(apiURL: String, withParameter parameter: String = "",  completion: @escaping ( _ success: Bool, _ responce: [String: Any]?, _ error: APIError?) -> ()) {
         
         var urlString = "\(Config.sharedInstance.baseUrl!)\(apiURL)"
         if parameter != "" {
@@ -34,16 +34,15 @@ class APIClientImp: APIClient {
                     if statusCode == 200 {
                         if let JSON = response.result.value {
                             //print(JSON)
-                            completion(JSON, .success, NSLocalizedString("Done", comment: ""))
+                            completion(true, JSON as? [String : Any], nil)
                         }
                     }else{
-                        completion(nil, .serverError, NSLocalizedString("Problem in Server please wait and try again later.", comment: "") )
+                        completion(false, nil, .serverOverload )
                     }
                     break
                 case.failure(let error):
                     print(error)
-                    completion(nil, .serverError, NSLocalizedString("Problem in Server please wait and try again later.", comment: "") )
-                    
+                    completion(false, nil, .serverOverload )
                     break
                 }
         }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		382FF1F123D99C3C007C2627 /* ApiErrorsEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382FF1F023D99C3C007C2627 /* ApiErrorsEnum.swift */; };
 		3835F77B23D8813900AD2596 /* LoadingReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3835F77923D8813900AD2596 /* LoadingReusableView.xib */; };
 		3835F77C23D8813900AD2596 /* LoadingReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3835F77A23D8813900AD2596 /* LoadingReusableView.swift */; };
 		3866B45A23D723AE0045C8D5 /* ItemDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3866B45923D723AE0045C8D5 /* ItemDetailsViewController.swift */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		1E642870519BDA15C7A06FC8 /* Pods_ElMenus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElMenus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29E5F64BBA017981F086E7B0 /* Pods-ElMenus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElMenus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElMenus/Pods-ElMenus.debug.xcconfig"; sourceTree = "<group>"; };
+		382FF1F023D99C3C007C2627 /* ApiErrorsEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiErrorsEnum.swift; sourceTree = "<group>"; };
 		3835F77923D8813900AD2596 /* LoadingReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingReusableView.xib; sourceTree = "<group>"; };
 		3835F77A23D8813900AD2596 /* LoadingReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingReusableView.swift; sourceTree = "<group>"; };
 		3866B45923D723AE0045C8D5 /* ItemDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +74,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		382FF1F223D9A387007C2627 /* Utilites */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilites;
+			sourceTree = "<group>";
+		};
 		3835F77823D8813900AD2596 /* LoadingReusableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +203,7 @@
 		3885BB4A23D5E1CD00D1DE27 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				382FF1F223D9A387007C2627 /* Utilites */,
 				3835F77D23D8813F00AD2596 /* Helpers */,
 				3885BB4C23D5E1F800D1DE27 /* Extentions */,
 				3885BB4B23D5E1E800D1DE27 /* Enums */,
@@ -204,6 +214,7 @@
 		3885BB4B23D5E1E800D1DE27 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				382FF1F023D99C3C007C2627 /* ApiErrorsEnum.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -372,6 +383,7 @@
 				3866B45A23D723AE0045C8D5 /* ItemDetailsViewController.swift in Sources */,
 				3885BB2B23D5AD6500D1DE27 /* TagGateway.swift in Sources */,
 				3885BB4623D5D9F900D1DE27 /* TagCollectionViewCell.swift in Sources */,
+				382FF1F123D99C3C007C2627 /* ApiErrorsEnum.swift in Sources */,
 				3885BB5023D5F88600D1DE27 /* ItemTableViewCell.swift in Sources */,
 				3885BB0E23D59A7D00D1DE27 /* AppDelegate.swift in Sources */,
 				3885BB2223D5AB8300D1DE27 /* Config.swift in Sources */,
