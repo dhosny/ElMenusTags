@@ -104,26 +104,6 @@ class ItemsListViewModel {
 
 extension ItemsListViewModel {
     
-    //    func userPressedAddBtn(){
-    //        self.displayMode = .allCountries
-    //    }
-    //
-    //    func userPressedCancelAddBtn() {
-    //        self.displayMode = .selectedCountries
-    //    }
-    //
-    //    func userSearchedForCountry( searchTxt: String) {
-    //        if searchTxt == "" {
-    //            self.displayMode = .allCountries
-    //
-    //        } else {
-    //            self.filteredCountriesList = countryGateway.getFilteredCountries(str: searchTxt)
-    //            self.displayMode = .filteredCountries
-    //
-    //        }
-    //
-    //    }
-    //
         func userPressed( at indexPath: IndexPath ){
             selectedItem = itemsList[indexPath.row]
         }

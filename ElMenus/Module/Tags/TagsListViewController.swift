@@ -16,7 +16,7 @@ class TagsListViewController: UIViewController {
     
     var itemsViewModel: ItemsListViewModel!
     
-    let MAX_TAGS_HIGHT = CGFloat(100)
+    let MAX_TAGS_HIGHT: CGFloat = 100
     
     var loadingView: LoadingReusableView?
     @IBOutlet weak var collectionViewHieght: NSLayoutConstraint!
@@ -239,17 +239,6 @@ extension TagsListViewController: UICollectionViewDelegate, UICollectionViewData
         return UICollectionReusableView()
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-//        if elementKind == UICollectionView.elementKindSectionFooter {
-//            self.loadingView?.activityIndicator.startAnimating()
-//        }
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-//        if elementKind == UICollectionView.elementKindSectionFooter {
-//            self.loadingView?.activityIndicator.stopAnimating()
-//        }
-//    }
 }
 
 
@@ -275,20 +264,10 @@ extension TagsListViewController: UITableViewDelegate, UITableViewDataSource {
         return indexPath
     }
     
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if tableView == itemsTableView {
-//            if indexPath.row == 0 {
-//                UIView.animate(withDuration: 0.5, animations: {
-//                    self.collectionViewHieght.constant = self.MAX_TAGS_HIGHT
-//                    self.view.layoutIfNeeded()
-//
-//                })
-//            }
-//        }
-//    }
-    
     
 }
+
+// MARK: - UIScrollViewDelegate
 
 extension TagsListViewController{
     
@@ -297,7 +276,6 @@ extension TagsListViewController{
             let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
             if translation.y > 0 {
                 // swipes from top to bottom of screen -> down
-                //print(" // move down   111111111 2324234 34343")
                  if self.collectionViewHieght.constant == 0 {
                     if ((itemsTableView.indexPathsForVisibleRows?.contains(IndexPath(row: 0, section: 0)))!) {
                         UIView.animate(withDuration: 0.5, animations: {
@@ -310,7 +288,6 @@ extension TagsListViewController{
                 
             } else {
                 // swipes from bottom to top of screen -> up
-                //print(" // move up  ........ ..... ..... .. .")
                 if self.collectionViewHieght.constant == MAX_TAGS_HIGHT {
                     UIView.animate(withDuration: 0.5, animations: {
                         self.collectionViewHieght.constant = 0
@@ -325,6 +302,7 @@ extension TagsListViewController{
 }
 
 extension TagsListViewController {
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ItemDetailsViewController,
             let item = itemsViewModel.selectedItem {
