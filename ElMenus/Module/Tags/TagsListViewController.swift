@@ -194,6 +194,7 @@ class TagsListViewController: UIViewController {
 
 }
 
+// MARK: - UICollectionViewDelegate
 extension TagsListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -229,6 +230,7 @@ extension TagsListViewController: UICollectionViewDelegate, UICollectionViewData
     
        return CGSize(width: 40, height: collectionView.bounds.size.height)
     }
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionFooter {
             let aFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "loadingresuableviewid", for: indexPath) as! LoadingReusableView
@@ -241,7 +243,7 @@ extension TagsListViewController: UICollectionViewDelegate, UICollectionViewData
     
 }
 
-
+// MARK: - UITableViewDelegate
 extension TagsListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -301,6 +303,7 @@ extension TagsListViewController{
     }
 }
 
+// MARK: - Segue
 extension TagsListViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
